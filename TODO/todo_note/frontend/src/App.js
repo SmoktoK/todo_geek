@@ -1,56 +1,88 @@
-import React from 'react';
-import axios from "axios";
-import logo from './logo.svg';
-import * as url from "url";
 import './App.css';
-import UserList from "./components/User.js";
-import Todoauthor from "./components/Footer.js"
-import Menu from "./components/Menu.js";
+import React from 'react';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import axios from "axios";
+import Menu from "./components/Menu";
+import Home from "./components/Home";
+import Footer from "./components/Footer";
+import UserList from './components/User';
+import ProjectList from './components/Project';
+import NoteList from './components/Note';
 
+const apiUrl = 'http://localhost:8000/api/';
+const getUrl = (name) => `${apiUrl}${name}`;
 
 class App extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            'users': []
-        }
+            'users': [],
+            'projects': [],
+            'notes': []
+        };
     }
 
     componentDidMount() {
-        // const users = [
-        //
-        //     {
-        //         'first_name': 'Федор',
-        //         'last_name': 'Достаевский',
-        //         'birthday_year': 1821
-        //
-        //     },
-        //     {
-        //         'first_name': 'Александр',
-        //         'last_name': 'Грин',
-        //         'birthday_year': 1880
-        //     }
-        // ]
-
-        axios.get('http://127.0.0.1:8000/api/users/').then(response => {
-            this.setState(
-                {
-                    'users': response.data
-                }
-            )
-        }).catch(error => console.log(error))
-
+        axios.get(getUrl('users'))
+            .then(response => {
+                const users = response.data;
+                this.setState(
+                    {
+                        users
+                    }
+                );
+            })
+            .catch(error => console.error(error));
+        axios.get(getUrl('projects'))
+            .then(response => {
+                const projects = response.data;
+                this.setState(
+                    {
+                        projects
+                    }
+                );
+            })
+            .catch(error => console.error(error));
+        axios.get(getUrl('notes'))
+            .then(response => {
+                const notes = response.data;
+                this.setState(
+                    {
+                        notes
+                    }
+                );
+            })
+            .catch(error => console.error(error));
     }
 
     render() {
         return (
-            <div>
+            <Router>
                 <Menu/>
-                <br/>
-                <UserList users={this.state.users}/>
-                <Todoauthor/>
-            </div>
-        )
+                <Switch>
+                    <Route path='/' exact component={Home}/>
+                    <Route
+                        path='/users'
+                        render={(props) => (
+                            <UserList {...props} users={this.state.users}/>
+                        )}
+                    />
+                    <Route
+                        path='/projects'
+                        render={(props) => (
+                            <ProjectList {...props} projects={this.state.projects}/>
+                        )}
+                    />
+                    <Route
+                        path='/notes'
+                        render={(props) => (
+                            <NoteList {...props} notes={this.state.notes}/>
+                        )}
+                    />
+                </Switch>
+                <Footer/>
+            </Router>
+        );
     }
 }
 
