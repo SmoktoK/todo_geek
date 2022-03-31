@@ -1,9 +1,14 @@
-import React from "react";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Todoauthor() {
-	return <p>
-		'Создал Дмитрий Смок'
-	</p>;
+
+const Footer = () => {
+    return (
+        <footer className='footer-copyright fixed-bottom text-center bg-light py-3'>
+            &copy; {new Date().getFullYear()} Copyright: <a className='text-decoration-none'
+                                                            href='https://github.com/SmoktoK'> Dmitriy Smokotov </a>
+        </footer>
+    )
 }
 
-export default Todoauthor
+export default Footer

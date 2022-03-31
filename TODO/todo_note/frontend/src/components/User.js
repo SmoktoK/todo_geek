@@ -1,45 +1,42 @@
-import React from 'react'
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const UserItem = ({user}) => {
     return (
         <tr>
             <td>
-                {user.username}
+                {user?.first_name}
             </td>
             <td>
-                {user.first_name}
+                {user?.last_name}
             </td>
             <td>
-                {user.last_name}
+                {user?.email}
             </td>
             <td>
-                {user.email}
+                {user?.username}
             </td>
         </tr>
     )
-}
-
+};
 
 const UserList = ({users}) => {
     return (
-        <table>
-            <th>
-                User name
-            </th>
-            <th>
-                First name
-            </th>
-            <th>
-                Last Name
-            </th>
-            <th>
-                Email
-            </th>
-            {users.map((user) => <UserItem user={user}/>)}
+        <table className='table table-striped table-borderless mx-auto w-auto' style={{'width': '50%'}}>
+            <thead>
+            <tr>
+                <th scope='col' style={{'width': '15%'}}>Имя</th>
+                <th scope='col' style={{'width': '25%'}}>Фамилия</th>
+                <th scope='col' style={{'width': '30%'}}>Email</th>
+                <th scope='col' style={{'width': '30%'}}>Логин</th>
+            </tr>
+            </thead>
+            <tbody>
+            {users.map((user) => <UserItem key={/* email key is unique */user.email} user={user}/>)}
+            </tbody>
         </table>
     )
-}
+};
 
-
-export default UserList
+export default UserList;

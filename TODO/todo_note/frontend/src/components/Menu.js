@@ -1,12 +1,28 @@
-import React from "react";
+import React from 'react';
+import {Link} from 'react-router-dom';
 
-function Menu() {
+
+const Menu = () => {
     return (
-        <ul class='main-menu'>
-            <li class='main_li'><a href="">Пользователи</a></li>
-            <li class='main_li'><a href="">Проекты</a></li>
-            <li class='main_li'><a href="">TODO</a></li>
-        </ul>)
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <Link to='/' className="ms-2 navbar-brand mb-0 h1">
+                Меню
+            </Link>
+            <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div className="navbar-nav">
+                    <Link to='/users' className="nav-item nav-link active">
+                        Список пользователей
+                    </Link>
+                    <Link to='/projects' className="nav-item nav-link active">
+                        Проекты
+                    </Link>
+                    <Link to='/notes' className="nav-item nav-link active">
+                        Заметки
+                    </Link>
+                </div>
+            </div>
+        </nav>
+    )
 }
 
 export default Menu
