@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 from TODO.filters import NoteFilter, ProjectFilter
 from TODO.models import Project, Note
 from TODO.serializers import ProjectModelSerializer, NoteModelSerializer
-
+from rest_framework.permissions import IsAdminUser
 
 class ProjectLimitOffsetPagination(LimitOffsetPagination):
     default_limit = 10
