@@ -1,38 +1,23 @@
 from django.test import TestCase
-from django.contrib.auth import get_user_model
-class UsersManagersTests(TestCase):
-    def test_create_user(self):
-        User = get_user_model()
-        user = User.objects.create_user(email='normal@user.com', password='admin')
-        self.assertEqual(user.email, 'normal@user.com')
-        self.assertTrue(user.is_active)
-        self.assertFalse(user.is_staff)
-        self.assertFalse(user.is_superuser)
-        try:
-            # username is None for the AbstractUser option
-            # username does not exist for the AbstractBaseUser option
-            self.assertIsNone(user.username)
-        except AttributeError:
-            pass
-        with self.assertRaises(TypeError):
-            User.objects.create_user()
-        with self.assertRaises(TypeError):
-            User.objects.create_user(email='')
-        with self.assertRaises(ValueError):
-            User.objects.create_user(email='', password="admin")
-    def test_create_superuser(self):
-        User = get_user_model()
-        admin_user = User.objects.create_superuser('super@user.com', 'admin')
-        self.assertEqual(admin_user.email, 'super@user.com')
-        self.assertTrue(admin_user.is_active)
-        self.assertTrue(admin_user.is_staff)
-        self.assertTrue(admin_user.is_superuser)
-        try:
-            # username is None for the AbstractUser option
-            # username does not exist for the AbstractBaseUser option
-            self.assertIsNone(admin_user.username)
-        except AttributeError:
-            pass
-        with self.assertRaises(ValueError):
-            User.objects.create_superuser(
-                email='super@user.com', password='admin', is_superuser=False)
+from rest_framework import status
+from rest_framework.test import APIClient
+
+from users.models import User
+
+
+class TestUserViewSet(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='user',
+                                             email='user@gb.local',
+                                             password='geekbrains')
+
+    def test_get_detail_no_auth(self):
+        client = APIClient()
+        response = client.get(f'/api/users/{self.user.id}/')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_get_detail_auth(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.get(f'/api/users/{self.user.id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
