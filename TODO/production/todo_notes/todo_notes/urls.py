@@ -64,4 +64,5 @@ urlpatterns = [
          schema_view.with_ui('redoc', cache_timeout=0),
          name='schema-redoc'),
     path('graphql/', GraphQLView.as_view(graphiql=True)),
+    path('', TemplateView.as_view(template_name='index.html'))
 ]

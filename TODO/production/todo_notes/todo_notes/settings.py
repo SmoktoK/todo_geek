@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 env = environ.Env(
     # set casting, default value
@@ -19,10 +20,9 @@ env = environ.Env(
 )
 
 # Reading .env file
-base = environ.Path(__file__) - 2  # Environment file is situated two folders back
+base = environ.Path(__file__) - 2
 environ.Env.read_env(env_file=base('.env'))
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
@@ -57,8 +57,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'graphene_django',
-
-    # custom apps
     'users',
     'notes',
 ]
@@ -79,8 +77,7 @@ ROOT_URLCONF = 'todo_notes.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [BASE_DIR / 'frontend/build/'],
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'frontend/build/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,8 +102,8 @@ DATABASES = {
         'HOST': 'db',
         'PORT': '5432',
         'NAME': 'todo_notes',
-        'USER': env('DEFAULT_SU_LOGIN'),
-        'PASSWORD': env('DEFAULT_SU_PASS'),
+        'USER': 'django',
+        'PASSWORD': 1,
     }
 }
 
@@ -148,9 +145,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     BASE_DIR / 'frontend/build/static',
-# )
+STATICFILES_DIRS = (
+    BASE_DIR / 'frontend/build/static',
+)
 
 AUTH_USER_MODEL = 'users.User'
 

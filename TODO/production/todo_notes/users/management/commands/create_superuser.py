@@ -1,6 +1,6 @@
 import environ
 
-from users.models import User
+from todo_notes.users.models import User
 
 env = environ.Env(
     # set casting, default value
@@ -11,7 +11,7 @@ env = environ.Env(
 )
 
 # Reading .env file
-base = environ.Path(__file__) - 4  # Environment file is situated four folders back
+base = environ.Path(__file__) - 4
 environ.Env.read_env(env_file=base('.env'))
 
 
