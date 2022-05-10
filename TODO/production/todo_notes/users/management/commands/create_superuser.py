@@ -1,6 +1,5 @@
 import environ
-
-from todo_notes.users.models import User
+from users.models import User
 
 env = environ.Env(
     # set casting, default value
